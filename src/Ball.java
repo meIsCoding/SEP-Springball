@@ -8,8 +8,9 @@ public class Ball extends Observable {
 	private double pos_y;
 	private double dx;
 	private double dy;
-	private long letztesupdate;
-	private double speed;
+	private long lastupdate;
+	private double speedX;
+	private double speedY;
 	private Color farbe = Color.BLACK;
 
 	
@@ -20,7 +21,7 @@ public class Ball extends Observable {
 		this.pos_y = startpunkt.getY();
 		this.dx = dx;
 		this.dy = dy;
-		this.letztesupdate = System.currentTimeMillis();
+		this.lastupdate = System.currentTimeMillis();
 		this.farbe = farbe;
 	}
 
@@ -30,10 +31,10 @@ public class Ball extends Observable {
 	
 	public void updatePosition() {
 		long aktuellezeit = System.currentTimeMillis();
-		long verstrichen = aktuellezeit - letztesupdate;
+		long verstrichen = aktuellezeit - lastupdate;
 		pos_x += dx * verstrichen / 1000;
 		pos_y += dy * verstrichen / 1000;
-		letztesupdate = aktuellezeit;
+		lastupdate = aktuellezeit;
 		if (pos_x<0 || pos_x>randpunkt.x) {
 			dx *= -1;
 			pos_x = (2*randpunkt.x - pos_x) % randpunkt.x;
