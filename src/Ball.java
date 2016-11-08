@@ -1,48 +1,62 @@
-import java.awt.Point;
 import java.awt.Color;
+import java.awt.Point;
+import java.util.ArrayList;
 import java.util.Observable;
 
-public class Ball extends Observable {
-	private Point randpunkt;
-	private double pos_x;
-	private double pos_y;
+public class Ball extends Observable{
+	private Point boundarypoint;
+	private double posX, posY;
+	private double diameter;
+	private double vx, vy;
 	private double dx;
 	private double dy;
-	private long lastupdate;
-	private double speedX;
-	private double speedY;
-	private Color farbe = Color.BLACK;
-
+	private int id;
+	private Color color = Color.BLACK;
+	private long lastUpdate;
+	private ArrayList<Ball> others;
 	
-	
-	public Ball(Point randpunkt, Point startpunkt, double dx, double dy, Color farbe) {
-		this.randpunkt = randpunkt;
-		this.pos_x = startpunkt.getX();
-		this.pos_y = startpunkt.getY();
-		this.dx = dx;
-		this.dy = dy;
-		this.lastupdate = System.currentTimeMillis();
-		this.farbe = farbe;
-	}
-
-	public Ball(Point randpunkt, Point startpunkt, double dx, double dy) {
-		this(randpunkt, startpunkt, dx, dy, Color.BLACK);
+	public Ball(Point boundarypoint, Point startPoint, double diameter, int id, ArrayList<Ball> others){
+		this.boundarypoint = boundarypoint;
+		this.posX = startPoint.x;
+		this.posY = startPoint.y;
+		this.diameter = diameter;
+		this.id = id;
+		this.lastUpdate = System.currentTimeMillis();
+		this.others = others;
 	}
 	
+	public double getX(){
+		return posX;
+	}
+	public double getY(){
+		return posY;
+	}
+	public double getDiameter(){
+		return diameter;
+	}
+	public int getID(){
+		return id;
+	}
+	
+	public Color getColor(){
+		return color;
+	}
+	public Point getPosition() {
+		return new Point((int) Math.round(posX), (int) Math.round(posY));
+	}
 	public void updatePosition() {
 		long aktuellezeit = System.currentTimeMillis();
-		long verstrichen = aktuellezeit - lastupdate;
-		pos_x += dx * verstrichen / 1000;
-		pos_y += dy * verstrichen / 1000;
-		lastupdate = aktuellezeit;
-		if (pos_x<0 || pos_x>randpunkt.x) {
+		long verstrichen = aktuellezeit - lastUpdate;			
+		posX += dx * verstrichen / 1000;
+		posY += dy * verstrichen / 1000;			
+		lastUpdate = aktuellezeit;
+		if (posX<0 || posX>boundarypoint.x) {
 			dx *= -1;
-			pos_x = (2*randpunkt.x - pos_x) % randpunkt.x;
+			posX = (2*boundarypoint.x - posX) % boundarypoint.x; 
 		}
-		if (pos_y<0 || pos_y>randpunkt.y) {
+		if (posY<0 || posY>boundarypoint.y) {
 			dy *= -1;
-			pos_y = (2*randpunkt.y - pos_y) % randpunkt.y;
-		}
+			posY = (2*boundarypoint.y - posY) % boundarypoint.y; 
+		}				
 	}
-	
 }
